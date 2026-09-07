@@ -8,6 +8,24 @@
 </head>
 <body>
     <%- include('navbar') %>
-    <h1> To Do List </h1>
+    <div class="container">
+        <div class="container-items">
+            <h1> To Do List </h1>
+            <ul class="task-list">
+                <% for(let i=0; i<taskList.length; i++) { %>
+                    <li>
+                        <div class="task-items">
+                            <%= taskList[i].title %> <br/>
+                            <p> <%= taskList[i].description %> </p>
+                            <!-- <a href="/delete/<%= taskList[i]._id %>" class="delete"> Delete </a> -->
+                            <button onclick="deleteTask('<%= taskList[i]._id %>')" class="delete"> Delete </button>
+                        </div>
+                    </li>
+                    <br/>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <script src="/script.js"></script>
 </body>
 </html>
