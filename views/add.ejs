@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Task</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <%- include('navbar') %>
-    <h1> Add your task here </h1>
+
+    <div class="container">
+        <div class="container-items">
+            <h1> Add your new task </h1>
+            <div class="add-form">
+                <form action="" method="post">
+                    <input type="text" placeholder="Enter task title" name="title" /> <br/><br/>
+                    <textarea type="text" name="description"></textarea> <br/><br/>
+                    <button> Add new task </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
