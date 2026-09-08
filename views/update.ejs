@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update page</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
     <%- include('navbar') %>
@@ -13,10 +13,10 @@
         <div class="container-items">
             <h1> Update your task </h1>
             <div class="add-form">
-                <form action="" method="post">
-                    <input type="text" placeholder="Enter task title" name="title" /> <br/><br/>
-                    <textarea type="text" name="description"></textarea> <br/><br/>
-                    <button> Add new task </button>
+                <form action="/update/<%= taskData._id %>" method="post">
+                    <input type="text" placeholder="Enter task title" name="title" value="<%= taskData.title %>"/> <br/><br/>
+                    <textarea type="text" name="description"><%= taskData.description %></textarea> <br/><br/>
+                    <button> Update task </button>
                 </form>
             </div>
         </div>

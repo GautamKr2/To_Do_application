@@ -15,7 +15,7 @@ const client = new MongoClient(process.env.db_url);
 // Function to connect databade
 async function connection() {
     const connect = await client.connect();
-    return await connect.db(dbName)
+    return await connect.db(dbName);
 }
 
 app.set('view engine' , 'ejs');
@@ -32,10 +32,7 @@ app.get("/add", (req, resp) => {
     resp.render("add")
 })
 
-app.get("/update", (req, resp) => {
-    resp.render("update")
-})
-
+// To add task
 app.post("/add", async (req, resp) => {
     const db = await connection();
     const collection = db.collection(collection1);
@@ -78,8 +75,50 @@ app.delete("/delete/:id", async (req, resp) => {
     }
 })
 
-app.post("/update", (req, resp) => {
-    resp.redirect("/")
+// Multiple Delete
+app.post("/multi-delete", async (req, resp) => {
+    const db = await connection();
+    const collection = db.collection(collection1);
+    let selectedTask = undefined;
+    if(Array.isArray(req.body.selectedTask)) {
+        selectedTask = req.body.selectedTask.map((id) => new ObjectId(id));
+    }
+    else {
+        selectedTask = [new ObjectId(req.body.selectedTask)];
+    }
+    const result = await collection.deleteMany({_id:{$in: selectedTask}});
+    if(result.deletedCount > 0) {
+        resp.redirect("/")
+    }
+    else {
+        resp.send("Some error has occured")
+    }
+})
+
+
+// API for Update task
+app.get("/update/:id", async (req, resp) => {
+    const id = req.params.id;
+    const db = await connection();
+    const collection = db.collection(collection1);
+    const result = await collection.findOne({_id: new ObjectId(id)});
+    resp.render("update", {taskData: result});
+})
+
+
+app.post("/update/:id", async (req, resp) => {
+    const id = req.params.id;
+    const db = await connection();
+    const collection = db.collection(collection1);
+    const filter = ({_id: new ObjectId(id)});
+    const updateData = {$set:{title: req.body.title, description: req.body.description}};
+    const result = await collection.updateOne(filter, updateData);
+    if(result.acknowledged) {
+        resp.redirect("/");
+    }
+    else {
+        resp.render("some error")
+    }
 })
 
 app.listen(3200)
