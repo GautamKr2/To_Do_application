@@ -1,0 +1,27 @@
+.list-msg {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-top: 1rem;
+}
+
+.task-list {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    grid-template-columns: 50px 1fr 2fr;
+    margin: 20px;
+}
+
+.list-header {
+    font-weight: bold;
+    padding: 8px;
+    border: 1.4px solid #c7c2c2;
+    background-color: #dad7d7;
+}
+
+.list-item {
+    color: #202021;
+    border: 1.4px solid #ccc;
+    background-color: #f0f0f0;
+    padding: 7px;
+}
