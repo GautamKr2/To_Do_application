@@ -3,6 +3,7 @@ import NavBar from './components/NavBar'
 import { Route, Routes } from 'react-router-dom'
 import AddTask from './components/addTask'
 import TaskList from './components/taskList'
+import UpdateTask from './components/UpdateTask'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path='/' element={<TaskList />} />
         <Route path='/add' element={<AddTask />} />
+        <Route path='/update' element={<UpdateTask />} />
       </Routes>
     </>
   )

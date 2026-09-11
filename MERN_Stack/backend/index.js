@@ -7,6 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// API to add task
 app.post("/add-task", async (req, resp) => {
     const db = await connection();
     const collection = db.collection(collectionName);
@@ -19,6 +20,7 @@ app.post("/add-task", async (req, resp) => {
     }
 });
 
+// API to fetch all tasks
 app.get("/tasks", async (req, resp) => {
     const db = await connection();
     const collection = db.collection(collectionName);
@@ -31,6 +33,7 @@ app.get("/tasks", async (req, resp) => {
     }
 })
 
+//API to delete task
 app.delete("/delete-task/:id", async (req, resp) => {
     console.log("Id:", req.params.id)
     const db = await  connection();
@@ -41,6 +44,33 @@ app.delete("/delete-task/:id", async (req, resp) => {
     }
     else {
         resp.send({success: false, message: "Data not deleted"});
+    }
+})
+
+// API to get one task for edit
+app.get("/update-task/:id", async (req, resp) => {
+    const db = await connection();
+    const collection = db.collection(collectionName);
+    let data = await collection.findOne({_id: new ObjectId(req.params.id)});
+    if(data) {
+        resp.send({success: true, message: "Data fetched successfully", task: data});
+    }
+    else {
+        resp.send({success: false, message: "Data not fetched"});
+    }
+})
+
+app.put("/update-task/:id", async (req, resp) => {
+    const id = req.params.id;
+    
+    const db = await connection();
+    const collection = db.collection(collectionName);
+    const response = await collection.replaceOne({_id: new ObjectId(id)}, req.body);
+    if(response.modifiedCount > 0) {
+        resp.send({success: true, message: "Data updated successfully"});
+    }
+    else {
+        resp.send({success: false, message: "Data not updated"});
     }
 })
 

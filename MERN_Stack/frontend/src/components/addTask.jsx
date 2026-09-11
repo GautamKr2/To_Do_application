@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function AddTask() {
     const [taskData, setTaskData] = useState();
-    const navigate = useNavigate();
+    const navigate = useNavigate();  // use to navigate on another router
 
     const handleTaskData = async (event) => {
         event.preventDefault();
@@ -34,7 +34,7 @@ export default function AddTask() {
                     <label htmlFor="desc"> Description : </label>
                     <textarea onChange={(ev) => setTaskData({...taskData, description:ev.target.value})} rows={5} type="text" placeholder="Enter task description" name="description" id="desc"></textarea>
                     
-                    <button /*onClick={handleTaskData}*/ className="btn"> Add task </button>
+                    <button /*onClick={handleTaskData}*/ className="btn" type="submit"> Add task </button>
                 </form>
             </div>
         </>

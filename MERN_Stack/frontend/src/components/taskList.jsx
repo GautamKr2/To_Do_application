@@ -1,8 +1,10 @@
 import { Fragment, useEffect, useState } from "react"
 import "../style/tasklist.css";
+import { useNavigate } from "react-router-dom";
 
 export default function TaskList() {
     const [taskList, setTaskList] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getListData();
@@ -24,6 +26,12 @@ export default function TaskList() {
         }
     }
 
+    async function updateTask(id) {
+        let data = await fetch("http://localhost:3200/update-task/"+id);
+        data = await data.json();
+        navigate("/update", { state: { data: data.task }});
+    }
+
     return (
         <div>
             <h1 className="list-msg"> Your task list </h1>
@@ -31,7 +39,7 @@ export default function TaskList() {
                 <li className="list-header"> S.No </li>
                 <li className="list-header"> Title </li>
                 <li className="list-header"> Description </li>
-                <li className="list-header"> Actions </li>
+                <li className="list-header action"> Actions </li>
                 {
                     taskList && taskList.map((item, index) => (
                         <Fragment key={item._id}>
@@ -40,7 +48,7 @@ export default function TaskList() {
                             <li className="list-item"> {item.description} </li>
                             <li className="list-item">
                                 <button className="delete-btn" onClick={() => deleteTask(item._id)}> Delete </button>
-                                <button className="edit-btn"> Update </button>
+                                <button className="edit-btn" onClick={() => updateTask(item._id)}> Update </button>
                             </li>
                         </Fragment>
                     ))

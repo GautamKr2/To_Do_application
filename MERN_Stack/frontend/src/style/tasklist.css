@@ -26,6 +26,10 @@
     padding: 7px;
 }
 
+.action {
+    text-align: center;
+}
+
 .delete-btn {
     background-color: #fc2b2b;
     color: white;
