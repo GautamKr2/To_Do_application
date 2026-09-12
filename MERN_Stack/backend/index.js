@@ -62,10 +62,12 @@ app.get("/update-task/:id", async (req, resp) => {
 
 app.put("/update-task/:id", async (req, resp) => {
     const id = req.params.id;
+
+    const { _id, ...taskData } = req.body;
     
     const db = await connection();
     const collection = db.collection(collectionName);
-    const response = await collection.replaceOne({_id: new ObjectId(id)}, req.body);
+    const response = await collection.replaceOne({_id: new ObjectId(id)}, {_id: new ObjectId(id), ...taskData});
     if(response.modifiedCount > 0) {
         resp.send({success: true, message: "Data updated successfully"});
     }
