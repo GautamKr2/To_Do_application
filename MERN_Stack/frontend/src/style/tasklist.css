@@ -8,7 +8,7 @@
     display: grid;
     gap: 10px;
     list-style: none;
-    grid-template-columns: 50px 1fr 2fr 150px;
+    grid-template-columns: 150px 50px 1fr 2fr 150px;
     margin: 20px;
 }
 
@@ -55,4 +55,12 @@
 
 .edit-btn:hover {
     background-color: #129703;
+}
+
+.chk-box {
+    margin-bottom: auto;
+}
+
+.multi-delete {
+    margin-left: 20px;
 }

@@ -19,7 +19,6 @@ export default function AddTask() {
         const result = await response.json();
         if(result.success) {
             navigate("/");
-            console.log("New task Added")
         }
     }
 

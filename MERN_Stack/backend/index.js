@@ -18,7 +18,7 @@ app.post("/add-task", async (req, resp) => {
     else {
         resp.send({success: false, message: "Data not inserted"});
     }
-});
+})
 
 // API to fetch all tasks
 app.get("/tasks", async (req, resp) => {
@@ -60,6 +60,7 @@ app.get("/update-task/:id", async (req, resp) => {
     }
 })
 
+// API to update task
 app.put("/update-task/:id", async (req, resp) => {
     const id = req.params.id;
 
@@ -73,6 +74,22 @@ app.put("/update-task/:id", async (req, resp) => {
     }
     else {
         resp.send({success: false, message: "Data not updated"});
+    }
+})
+
+// API to delete multiple tasks
+app.delete("/multi-delete", async (req, resp) => {
+    const ids = req.body;
+    const selectedTasksIds = ids.map((id) => new ObjectId(id));
+    const db = await connection();
+    const collection = db.collection(collectionName);
+    const response = await collection.deleteMany({_id: {$in: selectedTasksIds}});
+    console.log(response)
+    if(response.deletedCount > 0) {
+        resp.send({success: true, message: "Data deleted successfully", response});
+    }
+    else {
+        resp.send({success: false, message: "Data not deleted"});
     }
 })
 
