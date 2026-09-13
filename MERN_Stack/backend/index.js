@@ -118,4 +118,25 @@ app.post("/signup", async (req, resp) => {
     }
 })
 
+// API for login page
+app.post("/login", async (req, resp) => {
+    const userData = req.body;
+    if(userData.email && userData.password) {
+        const db = await connection();
+        const collection = db.collection("users");
+        const result = await collection.findOne({email: userData.email, password: userData.password});
+        if(result) {
+            jwt.sign(userData, "ToDoApp", {expiresIn: '5d'}, (error, token) => {
+                resp.send({success: true, message: "You have login successfully", token})
+            })
+        }
+        else {
+            resp.send({success: false, message: "Login not done"});
+        }
+    }
+    else {
+        resp.send({success: false, message: "Some input space is vacant"});
+    }
+})
+
 app.listen(3200);

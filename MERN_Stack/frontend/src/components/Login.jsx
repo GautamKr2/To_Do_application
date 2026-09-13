@@ -9,12 +9,13 @@ export default function Login() {
         let response = await fetch("http://localhost:3200/login", {
             method: "post",
             body: JSON.stringify(userData),
-            Headers: {
+            headers: {
                 "Content-Type": "Application/json"
             }
         })
         response = await response.json();
         if(response.success) {
+            document.cookie = "token="+response.token;
             console.log("Login Successful")
         }
         else {
