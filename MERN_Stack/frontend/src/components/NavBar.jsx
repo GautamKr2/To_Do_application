@@ -8,6 +8,7 @@ function NavBar() {
             <ul className="nav-links">
                 <li> <Link to="/"> List </Link> </li>
                 <li> <Link to="/add"> Add Task </Link> </li>
+                <li> <Link to="/login"> Login/SignUp </Link> </li>
             </ul>
         </div>
     )

@@ -2,9 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import { collectionName, connection } from './dbconfig.js';
 import { ObjectId } from 'mongodb';
+import jwt from 'jsonwebtoken';
+
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // API to add task
@@ -90,6 +93,28 @@ app.delete("/multi-delete", async (req, resp) => {
     }
     else {
         resp.send({success: false, message: "Data not deleted"});
+    }
+})
+
+// API for SignUp page
+app.post("/signup", async (req, resp) => {
+    const userData = req.body;
+    console.log(userData)
+    if(userData.name && userData.email, userData.password) {
+        const db = await connection();
+        const collection = db.collection('users');
+        const result = await collection.insertOne(userData);
+        if(result.acknowledged) {
+            jwt.sign(userData, "Apple", {expiresIn: '5d'}, (error, token) => {
+                resp.send({success: true, message: "SignIn done", token});
+            })
+        }
+        else {
+            resp.send({success: false, message: "SignIn not done"});
+        }
+    }
+    else {
+        resp.send({success: false, message: "Some input space are vacant"});
     }
 })
 
