@@ -27,3 +27,15 @@
 .nav-links a:hover {
     color: #cbc8c8;
 }
+
+.logout-btn {
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #424243;
+    color: #fff;
+    border: none;
+}
+
+.logout-btn:hover {
+    color: rgb(249, 85, 64);
+}

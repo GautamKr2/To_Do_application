@@ -21,26 +21,40 @@ export default function TaskList() {
         if(list.success) {
             setTaskList(list.taskList);
         }
+        else {
+            alert("Please login first")
+        }
     }
 
 
     // To delete single task
     async function deleteTask(id) {
         let resp = await fetch("http://localhost:3200/delete-task/"+id, {
-            method: 'delete'
+            method: 'delete',
+            credentials: 'include'
         });
         resp = await resp.json();
         if(resp.success) {
             getListData();
+        }
+        else {
+            alert("Please login first")
         }
     }
 
 
     // To update task, we will navigate to update page and pass the data of that task to update page
     async function updateTask(id) {
-        let data = await fetch("http://localhost:3200/update-task/"+id);
+        let data = await fetch("http://localhost:3200/update-task/"+id, {
+            credentials: 'include'
+        });
         data = await data.json();
-        navigate("/update", { state: { data: data.task }});
+        if(data) {
+            navigate("/update", { state: { data: data.task }});
+        }
+        else {
+            alert("Please login first")
+        }
     }
 
 
@@ -73,7 +87,8 @@ export default function TaskList() {
                 body: JSON.stringify(selectedTask),
                 headers: {
                     "Content-Type": "Application/json"
-                }
+                },
+                credentials: 'include'
             })
             response = await response.json();
             if(response.success) {

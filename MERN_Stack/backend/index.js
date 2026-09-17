@@ -16,7 +16,7 @@ app.use(cors({
 app.use(cookieParser());
 
 // API to add task
-app.post("/add-task", async (req, resp) => {
+app.post("/add-task", verifyJWTToken, async (req, resp) => {
     const db = await connection();
     const collection = db.collection(collectionName);
     const result = await collection.insertOne(req.body);
@@ -41,25 +41,10 @@ app.get("/tasks", verifyJWTToken, async (req, resp) => {
         resp.send({success: false, message: "Data not fetched"});
     }
 })
-function verifyJWTToken(req, resp, next) {
-    // console.log('Cookie token from function: ', req.cookies.token)
-    const token = req.cookies.token;
-    jwt.verify(token, 'ToDoApp', (error, decoded) => {
-        if(error) {
-            resp.send({
-                success: false,
-                message: "Please login first"
-            })
-        }
-        else {
-            console.log("Decoded message", decoded)
-            next()
-        }
-    })
-}
+
 
 //API to delete task
-app.delete("/delete-task/:id", async (req, resp) => {
+app.delete("/delete-task/:id", verifyJWTToken, async (req, resp) => {
     console.log("Id:", req.params.id)
     const db = await  connection();
     const collection = db.collection(collectionName);
@@ -73,7 +58,7 @@ app.delete("/delete-task/:id", async (req, resp) => {
 })
 
 // API to get one task for edit
-app.get("/update-task/:id", async (req, resp) => {
+app.get("/update-task/:id", verifyJWTToken, async (req, resp) => {
     const db = await connection();
     const collection = db.collection(collectionName);
     let data = await collection.findOne({_id: new ObjectId(req.params.id)});
@@ -86,7 +71,7 @@ app.get("/update-task/:id", async (req, resp) => {
 })
 
 // API to update task
-app.put("/update-task/:id", async (req, resp) => {
+app.put("/update-task/:id", verifyJWTToken, async (req, resp) => {
     const id = req.params.id;
 
     const { _id, ...taskData } = req.body;
@@ -103,7 +88,7 @@ app.put("/update-task/:id", async (req, resp) => {
 })
 
 // API to delete multiple tasks
-app.delete("/multi-delete", async (req, resp) => {
+app.delete("/multi-delete", verifyJWTToken, async (req, resp) => {
     const ids = req.body;
     const selectedTasksIds = ids.map((id) => new ObjectId(id));
     const db = await connection();
@@ -160,5 +145,23 @@ app.post("/login", async (req, resp) => {
         resp.send({success: false, message: "Some input space is vacant"});
     }
 })
+
+
+// Function to verify token
+function verifyJWTToken(req, resp, next) {
+    // console.log('Cookie token from function: ', req.cookies.token)
+    const token = req.cookies.token;
+    jwt.verify(token, 'ToDoApp', (error, decoded) => {
+        if(error) {
+            resp.send({
+                success: false,
+                message: "Please login first"
+            })
+        }
+        else {
+            next()
+        }
+    })
+}
 
 app.listen(3200);

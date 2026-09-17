@@ -18,7 +18,8 @@ export default function UpdateTask() {
             body: JSON.stringify(taskData),
             headers: {
                 "Content-Type": "Application/json"
-            }
+            },
+            credentials: 'include'
         })
         resp = await resp.json();
         if(resp.success) {
@@ -26,8 +27,7 @@ export default function UpdateTask() {
             navigate('/');
         }
         else {
-            console.log("Error in updating task");
-            navigate('/add');
+            alert("Data updation failed, please try again")
         }
     }
 

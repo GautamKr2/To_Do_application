@@ -12,7 +12,7 @@ export default function SignUp() {
         else if(localStorage.getItem('login')) {
             navigate("/");
         }
-    })
+    }, [])
 
     const handleSignupForm = async (event) => {
         event.preventDefault();

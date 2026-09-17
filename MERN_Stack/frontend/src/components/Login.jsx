@@ -9,7 +9,7 @@ export default function Login() {
         if(localStorage.getItem('login')) {
             navigate("/");
         }
-    })
+    }, [])
 
     async function handleLoginForm(event) {
         event.preventDefault();
@@ -24,6 +24,7 @@ export default function Login() {
         if(response.success) {
             document.cookie = "token="+response.token;
             localStorage.setItem('login', userData.email);
+            window.dispatchEvent(new Event("localStorage-change"));
             navigate("/")
         }
         else {

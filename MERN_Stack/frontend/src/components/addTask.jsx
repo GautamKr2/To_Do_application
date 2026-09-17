@@ -14,11 +14,15 @@ export default function AddTask() {
             body: JSON.stringify(taskData),
             headers: {
                 "Content-Type": "Application/json"
-            }
+            },
+            credentials: 'include'
         })
         const result = await response.json();
         if(result.success) {
             navigate("/");
+        }
+        else {
+            alert("Please login first")
         }
     }
 
