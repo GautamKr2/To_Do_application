@@ -1,8 +1,15 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [userData, setUserData] = useState();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(localStorage.getItem('login')) {
+            navigate("/");
+        }
+    })
 
     async function handleLoginForm(event) {
         event.preventDefault();
@@ -16,10 +23,11 @@ export default function Login() {
         response = await response.json();
         if(response.success) {
             document.cookie = "token="+response.token;
-            console.log("Login Successful")
+            localStorage.setItem('login', userData.email);
+            navigate("/")
         }
         else {
-            console.log("Login not done");
+            alert("Login not done");
         }
     }
     return (

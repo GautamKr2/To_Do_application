@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
     const [userData, setUserData] = useState();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(localStorage.getItem('signup')) {
+            navigate("/login");
+        }
+        else if(localStorage.getItem('login')) {
+            navigate("/");
+        }
+    })
 
     const handleSignupForm = async (event) => {
         event.preventDefault();
@@ -17,7 +26,8 @@ export default function SignUp() {
         response = await response.json();
         if(response.success) {
             document.cookie = "token="+response.token;
-            navigate("/");
+            localStorage.setItem('signup', userData.email);
+            navigate("/login");
         }
         else {
             console.log(response.message)

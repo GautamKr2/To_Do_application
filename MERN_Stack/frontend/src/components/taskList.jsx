@@ -14,7 +14,9 @@ export default function TaskList() {
     }, [])
 
     async function getListData() {
-        let list = await fetch("http://localhost:3200/tasks");
+        let list = await fetch("http://localhost:3200/tasks", {
+            credentials: 'include'
+        });
         list = await list.json();
         if(list.success) {
             setTaskList(list.taskList);
@@ -24,7 +26,9 @@ export default function TaskList() {
 
     // To delete single task
     async function deleteTask(id) {
-        let resp = await fetch("http://localhost:3200/delete-task/"+id, {method: 'delete'});
+        let resp = await fetch("http://localhost:3200/delete-task/"+id, {
+            method: 'delete'
+        });
         resp = await resp.json();
         if(resp.success) {
             getListData();

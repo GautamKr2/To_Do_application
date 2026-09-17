@@ -3,12 +3,17 @@ import cors from 'cors';
 import { collectionName, connection } from './dbconfig.js';
 import { ObjectId } from 'mongodb';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+app.use(cookieParser());
 
 // API to add task
 app.post("/add-task", async (req, resp) => {
@@ -24,7 +29,8 @@ app.post("/add-task", async (req, resp) => {
 })
 
 // API to fetch all tasks
-app.get("/tasks", async (req, resp) => {
+app.get("/tasks", verifyJWTToken, async (req, resp) => {
+    
     const db = await connection();
     const collection = db.collection(collectionName);
     const result = await collection.find().toArray();
@@ -35,6 +41,22 @@ app.get("/tasks", async (req, resp) => {
         resp.send({success: false, message: "Data not fetched"});
     }
 })
+function verifyJWTToken(req, resp, next) {
+    // console.log('Cookie token from function: ', req.cookies.token)
+    const token = req.cookies.token;
+    jwt.verify(token, 'ToDoApp', (error, decoded) => {
+        if(error) {
+            resp.send({
+                success: false,
+                message: "Please login first"
+            })
+        }
+        else {
+            console.log("Decoded message", decoded)
+            next()
+        }
+    })
+}
 
 //API to delete task
 app.delete("/delete-task/:id", async (req, resp) => {
@@ -105,7 +127,7 @@ app.post("/signup", async (req, resp) => {
         const collection = db.collection('users');
         const result = await collection.insertOne(userData);
         if(result.acknowledged) {
-            jwt.sign(userData, "Apple", {expiresIn: '5d'}, (error, token) => {
+            jwt.sign(userData, "ToDoApp", {expiresIn: '5d'}, (error, token) => {
                 resp.send({success: true, message: "SignIn done", token});
             })
         }
