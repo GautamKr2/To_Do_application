@@ -103,6 +103,8 @@ app.delete("/multi-delete", verifyJWTToken, async (req, resp) => {
     }
 })
 
+
+const jwt_sec = process.env.jwt_secret;
 // API for SignUp page
 app.post("/signup", async (req, resp) => {
     const userData = req.body;
@@ -112,7 +114,7 @@ app.post("/signup", async (req, resp) => {
         const collection = db.collection('users');
         const result = await collection.insertOne(userData);
         if(result.acknowledged) {
-            jwt.sign(userData, "ToDoApp", {expiresIn: '5d'}, (error, token) => {
+            jwt.sign(userData, jwt_sec, {expiresIn: '5d'}, (error, token) => {
                 resp.send({success: true, message: "SignIn done", token});
             })
         }
@@ -133,7 +135,7 @@ app.post("/login", async (req, resp) => {
         const collection = db.collection("users");
         const result = await collection.findOne({email: userData.email, password: userData.password});
         if(result) {
-            jwt.sign(userData, "ToDoApp", {expiresIn: '5d'}, (error, token) => {
+            jwt.sign(userData, jwt_sec, {expiresIn: '5d'}, (error, token) => {
                 resp.send({success: true, message: "You have login successfully", token})
             })
         }
@@ -151,7 +153,7 @@ app.post("/login", async (req, resp) => {
 function verifyJWTToken(req, resp, next) {
     // console.log('Cookie token from function: ', req.cookies.token)
     const token = req.cookies.token;
-    jwt.verify(token, 'ToDoApp', (error, decoded) => {
+    jwt.verify(token, jwt_sec, (error, decoded) => {
         if(error) {
             resp.send({
                 success: false,
@@ -164,4 +166,8 @@ function verifyJWTToken(req, resp, next) {
     })
 }
 
-app.listen(3200);
+const PORT = process.env.PORT || 3200;
+
+app.listen(PORT, () => {
+    console.log(`Server running on Port ${PORT}`);
+});
