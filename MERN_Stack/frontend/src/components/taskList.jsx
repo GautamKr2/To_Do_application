@@ -14,9 +14,10 @@ export default function TaskList() {
     }, [])
 
     async function getListData() {
-        let list = await fetch("http://localhost:3200/tasks", {
+        let list = await fetch(`${import.meta.env.VITE_API_url}/tasks`, {
             credentials: 'include'
         });
+        console.log(`${import.meta.env.VITE_API_url}`)
         list = await list.json();
         if(list.success) {
             setTaskList(list.taskList);
