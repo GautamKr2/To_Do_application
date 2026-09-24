@@ -16,7 +16,7 @@ export default function SignUp() {
 
     const handleSignupForm = async (event) => {
         event.preventDefault();
-        let response = await fetch("http://localhost:3200/signup",{
+        let response = await fetch(`${import.meta.env.VITE_API_url}/signup`,{
             method: "post",
             body: JSON.stringify(userData),
             headers: {

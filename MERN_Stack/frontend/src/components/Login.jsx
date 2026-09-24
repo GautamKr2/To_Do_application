@@ -13,7 +13,7 @@ export default function Login() {
 
     async function handleLoginForm(event) {
         event.preventDefault();
-        let response = await fetch("http://localhost:3200/login", {
+        let response = await fetch(`${import.meta.env.VITE_API_url}/login`, {
             method: "post",
             body: JSON.stringify(userData),
             headers: {
@@ -23,7 +23,7 @@ export default function Login() {
         })
         response = await response.json();
         if(response.success) {
-            document.cookie = "token="+response.token;
+            //document.cookie = "token="+response.token;
             localStorage.setItem('login', userData.email);
             window.dispatchEvent(new Event("localStorage-change"));
             navigate("/")

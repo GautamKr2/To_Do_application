@@ -13,7 +13,7 @@ export default function UpdateTask() {
     async function handleUpdate(event) {
         event.preventDefault();
 
-        let resp = await fetch("http://localhost:3200/update-task/"+taskData._id, {
+        let resp = await fetch(`${import.meta.env.VITE_API_url}/update-task/`+taskData._id, {
             method: "put",
             body: JSON.stringify(taskData),
             headers: {

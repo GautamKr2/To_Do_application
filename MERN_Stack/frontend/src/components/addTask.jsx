@@ -9,7 +9,7 @@ export default function AddTask() {
     const handleTaskData = async (event) => {
         event.preventDefault();
 
-        let response = await fetch("http://localhost:3200/add-task", {
+        let response = await fetch(`${import.meta.env.VITE_API_url}/add-task`, {
             method: "post",
             body: JSON.stringify(taskData),
             headers: {

@@ -30,7 +30,7 @@ export default function TaskList() {
 
     // To delete single task
     async function deleteTask(id) {
-        let resp = await fetch("http://localhost:3200/delete-task/"+id, {
+        let resp = await fetch(`${import.meta.env.VITE_API_url}/delete-task/`+id, {
             method: 'delete',
             credentials: 'include'
         });
@@ -46,7 +46,7 @@ export default function TaskList() {
 
     // To update task, we will navigate to update page and pass the data of that task to update page
     async function updateTask(id) {
-        let data = await fetch("http://localhost:3200/update-task/"+id, {
+        let data = await fetch(`${import.meta.env.VITE_API_url}/update-task/`+id, {
             credentials: 'include'
         });
         data = await data.json();
@@ -83,7 +83,7 @@ export default function TaskList() {
     // To delete multiple task
     const deleteMultipleTasks = async () => {
         if(selectedTask?.length > 0) {
-            let response = await fetch("http://localhost:3200/multi-delete", {
+            let response = await fetch(`${import.meta.env.VITE_API_url}/multi-delete`, {
                 method: 'delete',
                 body: JSON.stringify(selectedTask),
                 headers: {
