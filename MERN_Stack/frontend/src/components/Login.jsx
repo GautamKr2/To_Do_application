@@ -18,7 +18,8 @@ export default function Login() {
             body: JSON.stringify(userData),
             headers: {
                 "Content-Type": "Application/json"
-            }
+            },
+            credentials: "include"
         })
         response = await response.json();
         if(response.success) {

@@ -136,6 +136,12 @@ app.post("/login", async (req, resp) => {
         const result = await collection.findOne({email: userData.email, password: userData.password});
         if(result) {
             jwt.sign(userData, jwt_sec, {expiresIn: '5d'}, (error, token) => {
+                resp.cookie("token", token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
+                    maxAge: 5 * 24 * 60 * 60 * 1000
+                });
                 resp.send({success: true, message: "You have login successfully", token})
             })
         }
