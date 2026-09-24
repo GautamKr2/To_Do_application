@@ -25,7 +25,7 @@ export default function SignUp() {
         })
         response = await response.json();
         if(response.success) {
-            document.cookie = "token="+response.token;
+            // document.cookie = "token="+response.token;
             localStorage.setItem('signup', userData.email);
             navigate("/login");
         }

@@ -23,7 +23,7 @@ export default function Login() {
         })
         response = await response.json();
         if(response.success) {
-            //document.cookie = "token="+response.token;
+            // document.cookie = "token="+response.token;
             localStorage.setItem('login', userData.email);
             window.dispatchEvent(new Event("localStorage-change"));
             navigate("/")

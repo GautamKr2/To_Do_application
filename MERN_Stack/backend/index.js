@@ -121,6 +121,12 @@ app.post("/signup", async (req, resp) => {
         const result = await collection.insertOne(userData);
         if(result.acknowledged) {
             jwt.sign(userData, jwt_sec, {expiresIn: '5d'}, (error, token) => {
+                resp.cookie("token", token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
+                    maxAge: 5 * 24 * 60 * 60 * 1000
+                });
                 resp.send({success: true, message: "SignIn done", token});
             })
         }
