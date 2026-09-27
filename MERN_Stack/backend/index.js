@@ -166,6 +166,12 @@ app.post("/login", async (req, resp) => {
     }
 })
 
+// API for logout page
+app.post("/logout", (req, resp) => {
+    resp.clearCookie("token");
+    resp.json({success: true, message: "Logged out"});
+})
+
 
 // Function to verify token
 function verifyJWTToken(req, resp, next) {
@@ -186,6 +192,4 @@ function verifyJWTToken(req, resp, next) {
 
 const PORT = process.env.PORT || 3200;
 
-app.listen(PORT, () => {
-    console.log(`Server running on Port ${PORT}`);
-});
+app.listen(PORT);

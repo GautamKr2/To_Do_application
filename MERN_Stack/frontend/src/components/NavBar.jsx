@@ -6,10 +6,14 @@ function NavBar() {
     const [login, setLogin] = useState(localStorage.getItem('login'));
     const navigate = useNavigate();
 
-    function Logout() {
+    async function Logout() {
+        await fetch(`${import.meta.env.VITE_API_url}/logout`, {
+            method: "post",
+            credentials: "include"
+        })
         localStorage.removeItem('login');
         window.dispatchEvent(new Event("localStorage-change"));
-        navigate("/login");
+        navigate("/login", { replace: true });
     }
 
     useEffect(() => {
